@@ -1,95 +1,93 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Grid from '@mui/material/Grid2';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import {
+  Button, Checkbox, FormControl, FormControlLabel,
+  Grid, IconButton, InputAdornment, InputLabel,
+  OutlinedInput, Typography, Box
+} from '@mui/material';
 
-// project imports
-import AnimateButton from 'ui-component/extended/AnimateButton';
-
-// assets
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-// ===============================|| JWT - LOGIN ||=============================== //
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function AuthLogin() {
-  const theme = useTheme();
-
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [checked, setChecked] = useState(true);
-
   const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const [error, setError] = useState('');
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = (event) => event.preventDefault();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/login/', {
+        username,
+        password,
+      });
+
+      const token = response.data.token;
+      const role = response.data.user.role;
+
+      localStorage.setItem('token', token);
+
+      if (role === 'client') {
+        navigate('/dashboard/default');
+      } else {
+        navigate('/dashboard/clients');
+      }
+
+    } catch (err) {
+      console.error(err);
+      setError("Nom d'utilisateur ou mot de passe incorrect");
+    }
   };
 
   return (
-    <>
-      <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-        <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
-        <OutlinedInput id="outlined-adornment-email-login" type="email" value="info@codedthemes.com" name="email" inputProps={{}} />
+    <form onSubmit={handleSubmit}>
+      <FormControl fullWidth margin="normal">
+        <InputLabel>Nom d'utilisateur</InputLabel>
+        <OutlinedInput
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          label="Nom d'utilisateur"
+        />
       </FormControl>
 
-      <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-        <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
+      <FormControl fullWidth margin="normal">
+        <InputLabel>Mot de passe</InputLabel>
         <OutlinedInput
-          id="outlined-adornment-password-login"
           type={showPassword ? 'text' : 'password'}
-          value="123456"
-          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           endAdornment={
             <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-                size="large"
-              >
+              <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </InputAdornment>
           }
-          inputProps={{}}
-          label="Password"
+          label="Mot de passe"
         />
       </FormControl>
 
-      <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-        <Grid>
-          <FormControlLabel
-            control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />}
-            label="Keep me logged in"
-          />
-        </Grid>
-        <Grid>
-          <Typography variant="subtitle1" component={Link} to="/forgot-password" color="secondary" sx={{ textDecoration: 'none' }}>
-            Forgot Password?
-          </Typography>
-        </Grid>
-      </Grid>
-      <Box sx={{ mt: 2 }}>
-        <AnimateButton>
-          <Button color="secondary" fullWidth size="large" type="submit" variant="contained">
-            Sign In
-          </Button>
-        </AnimateButton>
+      <FormControlLabel
+        control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} />}
+        label="Rester connecté"
+      />
+
+      {error && <Typography color="error">{error}</Typography>}
+
+      <Box mt={2}>
+        <Button type="submit" variant="contained" fullWidth color="secondary">
+          Se connecter
+        </Button>
       </Box>
-    </>
+    </form>
   );
 }
