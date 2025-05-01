@@ -1,90 +1,91 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 function ClientList() {
     const [clients, setClients] = useState([]);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+
     useEffect(() => {
-        axios.get('http://localhost:8000/api/clients',
-            {
-                headers: {
-                    'Authorization': `Token ${token}`,
-                    'Content-Type': 'application/json'
-                }
+        axios.get('http://localhost:8000/api/clients', {
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json'
             }
-        ).then(res => {
-            console.log(res.data)
+        }).then(res => {
             setClients(res.data);
-        })
-    }, [])
+        }).catch(err => {
+            console.error(err);
+        });
+    }, []);
+
     const handleDelete = (id) => {
-       if(confirm("Voulez-vous supprimer ce client?") == true){
-        axios.delete(`http://localhost:8000/api/clients/${id}/`,
-            {
+        if (window.confirm("Voulez-vous supprimer ce client?")) {
+            axios.delete(`http://localhost:8000/api/clients/${id}/`, {
                 headers: {
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json'
                 }
-            }
-        ).then(
-            function(response){
-              console.log(response);
-              window.location.reload();
-            }
-          ).catch(function(error){
-            console.log(error);
-          });
-       } else{
-        alert("Opération annulée")
-       }
-    }
+            }).then(() => {
+                setClients(prev => prev.filter(c => c.id !== id));
+            }).catch(err => {
+                console.error(err);
+            });
+        } else {
+            alert("Opération annulée");
+        }
+    };
+
     return (
-        <div className='text-white p-5'>
-            <h1 className='text-3xl mb-6'>Liste des clients</h1>
-            <a href='/clients/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-lg mb-3">
-                Ajouter 
-            </a>
-            <table className='table w-full mt-4 text-lg border b-2 b-white'>
-                        <thead className=' border b-2 border-black'>
-                            <tr className="table-row" >
-                                <th className='p-3 font-semibold table-cell border b-1'>Désignation</th>
-                                <th className='p-3 font-semibold table-cell border b-1'>Email</th>
-                                <th className='p-3 font-semibold table-cell border b-1'>Points de fidélité</th>
-                                <th className='p-3 font-semibold table-cell border b-1'>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className=''>
-                        {clients.map(function (client) {
-                        return (
-                                <tr className="table-row" key={client.id}>
-                                    <td className='p-3 table-cell text-center border b-1'> {client.nom} </td>
-                                    <td className='p-3 table-cell text-center border b-1'> {client.telephone} </td>
-                                    <td className='p-3 table-cell text-center border b-1'> {client.email} </td>
-                                    <td className='p-3 table-cell text-center border b-1'> {client.points_fidelite} </td>
-                                    <td className='p-3 table-cell text-center border b-1'> 
-                                        <div className="flex text-center justify-center">
-                                            
-                                            <a href={`/clients/edit/${client.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
-                                                <i className="fa-solid fa-pen-to-square" title="modifier"></i>
-                                            </a>
-                                            <span className="ml-2"></span>
-                                            
-                                                <button onClick={()=>{handleDelete(client.id)}} type="button" className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                                    <i className="fa-solid fa-trash" title="supprimer"></i>
-                                                </button>
-                                            
-                                        </div>    
-                                    </td>
+        <div className="container py-5">
+            <div className="card shadow-sm">
+                <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h5 className="card-title mb-0">Liste des clients</h5>
+                        <a href="/clients/create" className="btn btn-primary btn-sm">
+                            Ajouter
+                        </a>
+                    </div>
+
+                    <div className="table-responsive">
+                        <table className="table table-hover table-bordered align-middle text-center">
+                            <thead className="table-light">
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Points</th>
+                                    <th>Actions</th>
                                 </tr>
-                            )
-                        })}
-                        </tbody>
-                    </table>
-           
+                            </thead>
+                            <tbody>
+                                {clients.map((client) => (
+                                    <tr key={client.id}>
+                                        <td>{client.user.username}</td>
+                                        <td>{client.user.email}</td>
+                                        <td><strong>{client.points_fidelite}</strong></td>
+                                        <td>
+                                            <a href={`/clients/edit/${client.id}`} className="btn btn-sm btn-outline-primary me-2">
+                                                Modifier
+                                            </a>
+                                            <button onClick={() => handleDelete(client.id)} className="btn btn-sm btn-outline-danger">
+                                                Supprimer
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {clients.length === 0 && (
+                                    <tr>
+                                        <td colSpan="4" className="text-muted">Aucun client trouvé.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-    )
+    );
 }
 
-export default ClientList
+export default ClientList;
