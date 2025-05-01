@@ -3,6 +3,10 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import ClientList from '../views/dashboard/clients/ClientList';
+import RendezVous from '../views/dashboard/rendezvous/RendezVous';
+import Services from '../views/dashboard/services/Services';
+import Tarifs from '../views/dashboard/tarifs/Tarifs';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -31,7 +35,23 @@ const MainRoutes = {
         {
           path: 'default',
           element: <DashboardDefault />
-        }
+        },
+        {
+          path: 'clients',
+          element: <ClientList />
+        },
+        {
+          path: 'rendezvous',
+          element: <RendezVous />
+        },
+        {
+          path: 'services',
+          element: <Services />
+        },
+        {
+          path: 'tarifs',
+          element: <Tarifs />
+        },
       ]
     },
     {
