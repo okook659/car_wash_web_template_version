@@ -43,7 +43,7 @@ function ServiceTarificationList() {
                 <div className="card-body">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h5 className="card-title mb-0">Tarifs des services</h5>
-                        <a href="/tarifications/create" className="btn btn-primary btn-sm">
+                        <a href="tarif/create" className="btn btn-primary btn-sm">
                             Ajouter
                         </a>
                     </div>

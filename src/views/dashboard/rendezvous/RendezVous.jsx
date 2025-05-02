@@ -37,7 +37,7 @@ const RendezVous = () => {
         <div className="card-body">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h5 className="card-title mb-0">Liste des rendez-vous</h5>
-            <a href="/rendezvous/create" className="btn btn-primary btn-sm">
+            <a href="rendezvous/calendar" className="btn btn-primary btn-sm">
               Ajouter
             </a>
           </div>
