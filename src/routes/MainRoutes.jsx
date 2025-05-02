@@ -10,6 +10,8 @@ import Services from '../views/dashboard/services/Services';
 import ServiceCreate from '../views/dashboard/services/ServiceCreate';
 import ServiceEdit from '../views/dashboard/services/ServiceEdit';
 import Tarifs from '../views/dashboard/tarifs/Tarifs';
+import Laveur from '../views/dashboard/laveurs/Laveur';
+import LaveurCreate from '../views/dashboard/laveurs/LaveurCreate';
 import TarifCreate from '../views/dashboard/tarifs/TarifCreate';
 import TarifEdit from '../views/dashboard/tarifs/TarifEdit';
 import RendezVous from '../views/dashboard/rendezvous/RendezVous';
@@ -88,6 +90,14 @@ const MainRoutes = {
         {
           path: 'tarifs',
           element: <Tarifs />
+        },
+        {
+          path: 'laveur',
+          element: <Laveur />
+        },
+        {
+          path: 'laveurs',
+          element: <LaveurCreate />
         },
         {
           path: 'tarif/create',
