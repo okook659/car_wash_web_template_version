@@ -62,6 +62,14 @@ const pages = {
       url: 'dashboard/tarifs',
       breadcrumbs: false
     },
+    {
+      id: 'laveur',
+      title: 'laveur',
+      type: 'item',
+      url: 'dashboard/laveur',
+      breadcrumbs: false
+    },
+    
   ]
 };
 

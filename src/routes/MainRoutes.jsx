@@ -7,6 +7,8 @@ import ClientList from '../views/dashboard/clients/ClientList';
 import RendezVous from '../views/dashboard/rendezvous/RendezVous';
 import Services from '../views/dashboard/services/Services';
 import Tarifs from '../views/dashboard/tarifs/Tarifs';
+import Laveur from '../views/dashboard/laveurs/Laveur';
+import LaveurCreate from '../views/dashboard/laveurs/LaveurCreate';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -51,6 +53,14 @@ const MainRoutes = {
         {
           path: 'tarifs',
           element: <Tarifs />
+        },
+        {
+          path: 'laveur',
+          element: <Laveur />
+        },
+        {
+          path: 'laveurs',
+          element: <LaveurCreate />
         },
       ]
     },
