@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -45,6 +47,18 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 export default function TotalIncomeDarkCard({ isLoading }) {
+  const token = localStorage.getItem('token')
+  const [totalRendezVousAujourdhui, setTotalRendezVousAujourdhui] = useState();
+  useEffect(() => {
+     axios.get('http://localhost:8000/api/rendezvous_aujourdhui/', {
+          headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }).then(res => {
+          setTotalRendezVousAujourdhui(res.data.rendezvous_aujourdhui);
+        });
+  }, [])
   const theme = useTheme();
 
   return (
@@ -77,12 +91,12 @@ export default function TotalIncomeDarkCard({ isLoading }) {
                   }}
                   primary={
                     <Typography variant="h4" sx={{ color: '#fff' }}>
-                      $203k
+                      {totalRendezVousAujourdhui}
                     </Typography>
                   }
                   secondary={
                     <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                      Total Income
+                      Total Rendez-Vous Aujourd'hui
                     </Typography>
                   }
                 />

@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid2';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 // third party
@@ -18,26 +16,7 @@ import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowth
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
-// chart data
-import chartData from './chart-data/total-growth-bar-chart';
-
-const status = [
-  {
-    value: 'today',
-    label: 'Today'
-  },
-  {
-    value: 'month',
-    label: 'This Month'
-  },
-  {
-    value: 'year',
-    label: 'This Year'
-  }
-];
-
-export default function TotalGrowthBarChart({ isLoading }) {
-  const [value, setValue] = React.useState('today');
+export default function TotalGrowthBarChart({ isLoading, seriesData, categories }) {
   const theme = useTheme();
   const { mode } = useConfig();
 
@@ -51,34 +30,50 @@ export default function TotalGrowthBarChart({ isLoading }) {
   const secondaryMain = theme.palette.secondary.main;
   const secondaryLight = theme.palette.secondary.light;
 
-  React.useEffect(() => {
-    const newChartData = {
-      ...chartData.options,
-      colors: [primary200, primaryDark, secondaryMain, secondaryLight],
+  const chartData = {
+    type: 'bar',
+    height: 480,
+    series: seriesData,
+    options: {
+      chart: {
+        id: 'bar-chart',
+        stacked: true,
+        toolbar: { show: true },
+        zoom: { enabled: true }
+      },
+      plotOptions: {
+        bar: { horizontal: false, columnWidth: '50%' }
+      },
       xaxis: {
+        categories: categories || [],
         labels: {
-          style: {
-            style: { colors: primary }
-          }
+          style: { colors: primary }
         }
       },
       yaxis: {
         labels: {
-          style: {
-            style: { colors: primary }
-          }
+          style: { colors: primary }
         }
       },
       grid: { borderColor: divider },
       tooltip: { theme: mode },
-      legend: { labels: { colors: grey500 } }
-    };
-
-    // do not load chart when loading
-    if (!isLoading) {
-      ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
+      legend: {
+        show: true,
+        position: 'bottom',
+        labels: { useSeriesColors: false, colors: grey500 },
+        markers: { width: 16, height: 16, radius: 5 },
+        itemMargin: { horizontal: 15, vertical: 8 }
+      },
+      fill: { type: 'solid' },
+      dataLabels: { enabled: false }
     }
-  }, [mode, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, divider, isLoading, grey500]);
+  };
+
+  useEffect(() => {
+    if (!isLoading) {
+      ApexCharts.exec(`bar-chart`, 'updateOptions', chartData.options);
+    }
+  }, [chartData.options, isLoading]);
 
   return (
     <>
@@ -88,49 +83,9 @@ export default function TotalGrowthBarChart({ isLoading }) {
         <MainCard>
           <Grid container spacing={gridSpacing}>
             <Grid size={12}>
-              <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                <Grid>
-                  <Grid container direction="column" spacing={1}>
-                    <Grid>
-                      <Typography variant="subtitle2">Total Growth</Typography>
-                    </Grid>
-                    <Grid>
-                      <Typography variant="h3">$2,324.00</Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid>
-                  <TextField id="standard-select-currency" select value={value} onChange={(e) => setValue(e.target.value)}>
-                    {status.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-              </Grid>
+              <Typography variant="subtitle2">Rendez-Vous par service</Typography>
             </Grid>
-            <Grid
-              size={12}
-              sx={{
-                ...theme.applyStyles('light', {
-                  '& .apexcharts-series:nth-of-type(4) path:hover': {
-                    filter: `brightness(0.95)`,
-                    transition: 'all 0.3s ease'
-                  }
-                }),
-                '& .apexcharts-menu': {
-                  bgcolor: 'background.paper'
-                },
-                '.apexcharts-theme-light .apexcharts-menu-item:hover': {
-                  bgcolor: 'dark.main'
-                },
-                '& .apexcharts-theme-light .apexcharts-menu-icon:hover svg, .apexcharts-theme-light .apexcharts-reset-icon:hover svg, .apexcharts-theme-light .apexcharts-selection-icon:not(.apexcharts-selected):hover svg, .apexcharts-theme-light .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg, .apexcharts-theme-light .apexcharts-zoomin-icon:hover svg, .apexcharts-theme-light .apexcharts-zoomout-icon:hover svg':
-                  {
-                    fill: theme.palette.grey[400]
-                  }
-              }}
-            >
+            <Grid size={12}>
               <Chart {...chartData} />
             </Grid>
           </Grid>
@@ -140,4 +95,8 @@ export default function TotalGrowthBarChart({ isLoading }) {
   );
 }
 
-TotalGrowthBarChart.propTypes = { isLoading: PropTypes.bool };
+TotalGrowthBarChart.propTypes = {
+  isLoading: PropTypes.bool,
+  seriesData: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired
+};
