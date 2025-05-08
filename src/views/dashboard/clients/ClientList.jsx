@@ -15,6 +15,7 @@ function ClientList() {
             }
         }).then(res => {
             setClients(res.data);
+            console.log(res.data);
         }).catch(err => {
             console.error(err);
         });
@@ -43,7 +44,7 @@ function ClientList() {
                 <div className="card-body">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h5 className="card-title mb-0">Liste des clients</h5>
-                        <a href="/clients/create" className="btn btn-primary btn-sm">
+                        <a href="client/create" className="btn btn-primary btn-sm">
                             Ajouter
                         </a>
                     </div>
@@ -65,7 +66,7 @@ function ClientList() {
                                         <td>{client.user.email}</td>
                                         <td><strong>{client.points_fidelite}</strong></td>
                                         <td>
-                                            <a href={`/clients/edit/${client.id}`} className="btn btn-sm btn-outline-primary me-2">
+                                            <a href={`client/edit/${client.id}`} className="btn btn-sm btn-outline-primary me-2">
                                                 Modifier
                                             </a>
                                             <button onClick={() => handleDelete(client.id)} className="btn btn-sm btn-outline-danger">

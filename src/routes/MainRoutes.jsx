@@ -4,11 +4,20 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import ClientList from '../views/dashboard/clients/ClientList';
-import RendezVous from '../views/dashboard/rendezvous/RendezVous';
+import ClientCreate from '../views/dashboard/clients/ClientCreate';
+import ClientEdit from '../views/dashboard/clients/ClientEdit';
 import Services from '../views/dashboard/services/Services';
+import ServiceCreate from '../views/dashboard/services/ServiceCreate';
+import ServiceEdit from '../views/dashboard/services/ServiceEdit';
 import Tarifs from '../views/dashboard/tarifs/Tarifs';
 // import Laveur from '../views/laveur';
 import LaveurCreate from '../views/dashboard/laveurs/LaveurCreate';
+import TarifCreate from '../views/dashboard/tarifs/TarifCreate';
+import TarifEdit from '../views/dashboard/tarifs/TarifEdit';
+import RendezVous from '../views/dashboard/rendezvous/RendezVous';
+import RendezVousCalendar from '../views/dashboard/rendezvous/RendezVousCalendar';
+import RendezVousEdit from '../views/dashboard/rendezvous/RendezVousEdit';
+import RendezVousCreate from '../views/dashboard/rendezvous/RendezVousCreate';
 import StylishCalendar from '../views/dashboard/calendar/StylishCalendar';
 
 // dashboard routing
@@ -47,12 +56,40 @@ const MainRoutes = {
           element: <ClientList />
         },
         {
+          path: 'client/create',
+          element: <ClientCreate />
+        },
+        {
+          path: 'client/edit/:id',
+          element: <ClientEdit />
+        },
+        {
           path: 'rendezvous',
           element: <RendezVous />
         },
         {
+          path: 'rendezvous/create',
+          element: <RendezVousCreate />
+        },
+        {
+          path: 'rendezvous/calendar',
+          element: <RendezVousCalendar />
+        },
+        {
+          path: 'rendezvous/edit/:id',
+          element: <RendezVousEdit />
+        },
+        {
           path: 'services',
           element: <Services />
+        },
+        {
+          path: 'service/create',
+          element: <ServiceCreate />
+        },
+        {
+          path: 'service/edit/:id',
+          element: <ServiceEdit />
         },
         {
           path: 'tarifs',
@@ -61,6 +98,14 @@ const MainRoutes = {
         {
           path: 'laveurs',
           element: <LaveurCreate />
+        },
+        {
+          path: 'tarif/create',
+          element: <TarifCreate />
+        },
+        {
+          path: 'tarif/edit/:id',
+          element: <TarifEdit />
         },
         {
           path: 'calendar',

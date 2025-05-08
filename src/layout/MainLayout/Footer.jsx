@@ -17,9 +17,9 @@ export default function Footer() {
       }}
     >
       <Typography variant="caption">
-        &copy; All rights reserved{' '}
+        &copy; Tous droits réservés{' '}
         <Typography component={Link} href="https://codedthemes.com/about-us/" underline="hover" target="_blank" color="secondary.main">
-          CodedThemes
+         M&L
         </Typography>
       </Typography>
       <Stack direction="row" sx={{ gap: 1.5, alignItems: 'center', justifyContent: 'space-between' }}>
@@ -31,18 +31,9 @@ export default function Footer() {
           variant="caption"
           color="text.primary"
         >
-          Twitter
+          2025
         </Link>
-        <Link
-          component={RouterLink}
-          to="https://discord.com/invite/p2E2WhCb6s"
-          underline="hover"
-          target="_blank"
-          variant="caption"
-          color="text.primary"
-        >
-          Discord
-        </Link>
+       
       </Stack>
     </Stack>
   );

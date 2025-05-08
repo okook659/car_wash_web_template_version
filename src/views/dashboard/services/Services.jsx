@@ -43,7 +43,7 @@ function ServiceList() {
                 <div className="card-body">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h5 className="card-title mb-0">Liste des services</h5>
-                        <a href="/services/create" className="btn btn-primary btn-sm">
+                        <a href="service/create" className="btn btn-primary btn-sm">
                             Ajouter
                         </a>
                     </div>
@@ -63,7 +63,7 @@ function ServiceList() {
                                         <td>{service.nom}</td>
                                         <td>{service.description}</td>
                                         <td>
-                                            <a href={`/services/edit/${service.id}`} className="btn btn-sm btn-outline-primary me-2">
+                                            <a href={`service/edit/${service.id}`} className="btn btn-sm btn-outline-primary me-2">
                                                 Modifier
                                             </a>
                                             <button onClick={() => handleDelete(service.id)} className="btn btn-sm btn-outline-danger">

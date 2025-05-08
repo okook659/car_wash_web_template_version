@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -23,6 +23,18 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 export default function TotalOrderLineChartCard({ isLoading }) {
+  const token = localStorage.getItem('token')
+  const [totalRendezVous, setTotalRendezVous] = useState();
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/total_rendezvous/', {
+      headers: {
+        'Authorization': `Token ${token}`,
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      setTotalRendezVous(res.data.total_rendezvous);
+    });
+  })
   const theme = useTheme();
 
   const [timeValue, setTimeValue] = React.useState(false);
@@ -89,36 +101,19 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                     </Avatar>
                   </Grid>
                   <Grid>
-                    <Button
-                      disableElevation
-                      variant={timeValue ? 'contained' : 'text'}
-                      size="small"
-                      sx={{ color: 'inherit' }}
-                      onClick={(e) => handleChangeTime(e, true)}
-                    >
-                      Month
-                    </Button>
-                    <Button
-                      disableElevation
-                      variant={!timeValue ? 'contained' : 'text'}
-                      size="small"
-                      sx={{ color: 'inherit' }}
-                      onClick={(e) => handleChangeTime(e, false)}
-                    >
-                      Year
-                    </Button>
+                    
                   </Grid>
                 </Grid>
               </Grid>
               <Grid sx={{ mb: 0.75 }}>
                 <Grid container sx={{ alignItems: 'center' }}>
-                  <Grid size={6}>
+                  <Grid size={8}>
                     <Grid container sx={{ alignItems: 'center' }}>
                       <Grid>
                         {timeValue ? (
                           <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>$108</Typography>
                         ) : (
-                          <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>$961</Typography>
+                          <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>{totalRendezVous}</Typography>
                         )}
                       </Grid>
                       <Grid>
@@ -141,23 +136,12 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                             color: 'primary.200'
                           }}
                         >
-                          Total Order
+                          Total Rendez-Vous
                         </Typography>
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid
-                    size={6}
-                    sx={{
-                      '.apexcharts-tooltip.apexcharts-theme-light': {
-                        color: theme.palette.text.primary,
-                        background: theme.palette.background.default,
-                        ...theme.applyStyles('dark', { border: 'none' })
-                      }
-                    }}
-                  >
-                    {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
-                  </Grid>
+                 
                 </Grid>
               </Grid>
             </Grid>
