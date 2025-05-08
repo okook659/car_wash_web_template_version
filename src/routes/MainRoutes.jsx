@@ -7,8 +7,9 @@ import ClientList from '../views/dashboard/clients/ClientList';
 import RendezVous from '../views/dashboard/rendezvous/RendezVous';
 import Services from '../views/dashboard/services/Services';
 import Tarifs from '../views/dashboard/tarifs/Tarifs';
-import Laveur from '../views/dashboard/laveurs/Laveur';
+// import Laveur from '../views/laveur';
 import LaveurCreate from '../views/dashboard/laveurs/LaveurCreate';
+import StylishCalendar from '../views/dashboard/calendar/StylishCalendar';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -20,6 +21,9 @@ const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+
+const Laveur = Loadable(lazy(() => import('views/laveur')));
+
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -55,14 +59,20 @@ const MainRoutes = {
           element: <Tarifs />
         },
         {
-          path: 'laveur',
-          element: <Laveur />
-        },
-        {
           path: 'laveurs',
           element: <LaveurCreate />
         },
+        {
+          path: 'calendar',
+          element: <StylishCalendar />
+        },
+        
       ]
+    },
+    
+    {
+      path: 'laveur',
+      element: <Laveur />
     },
     {
       path: 'typography',

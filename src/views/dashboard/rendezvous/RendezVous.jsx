@@ -121,35 +121,35 @@ const RendezVous = () => {
                             <td>{rdv.type_vehicule}</td>
                             <td>{rdv.status}</td>
                             <td>
-                              <select
-                                className="form-select form-select-sm"
-                                value={rdv.laveur || ''}
-                                onChange={async (e) => {
-                                  const selectedLaveurId = e.target.value;
-                                  try {
-                                    const response = await fetch(`http://localhost:8000/api/rendezvous/${rdv.id}/`, {
-                                      method: 'PATCH',
-                                      headers: {
-                                        'Authorization': `Token ${token}`,
-                                        'Content-Type': 'application/json',
-                                      },
-                                      body: JSON.stringify({ laveur: selectedLaveurId })
-                                    });
+                            <select
+                                  className="form-select form-select-sm"
+                                  value={rdv.laveur || ''}
+                                  disabled={!!rdv.laveur} // désactive si un laveur est déjà assigné
+                                  onChange={async (e) => {
+                                    const selectedLaveurId = e.target.value;
+                                    try {
+                                      const response = await fetch(`http://localhost:8000/api/rendezvous/${rdv.id}/`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                          'Authorization': `Token ${token}`,
+                                          'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({ laveur: selectedLaveurId })
+                                      });
 
-                                    if (!response.ok) throw new Error('Erreur lors de l’assignation du laveur');
+                                      if (!response.ok) throw new Error('Erreur lors de l’assignation du laveur');
 
-                                    const updatedRdv = await response.json();
+                                      const updatedRdv = await response.json();
 
-                                    // Mettre à jour le tableau local
-                                    setRendezVous((prev) =>
-                                      prev.map((r) => (r.id === rdv.id ? updatedRdv : r))
-                                    );
-                                  } catch (err) {
-                                    console.error(err);
-                                    alert("Erreur lors de l'assignation");
-                                  }
-                                }}
-                              >
+                                      setRendezVous((prev) =>
+                                        prev.map((r) => (r.id === rdv.id ? updatedRdv : r))
+                                      );
+                                    } catch (err) {
+                                      console.error(err);
+                                      alert("Erreur lors de l'assignation");
+                                    }
+                                  }}
+                                >
                                 <option value="">-- Assigner --</option>
                                 {laveurs.map((laveur) => (
                                   <option key={laveur.id} value={laveur.id}>

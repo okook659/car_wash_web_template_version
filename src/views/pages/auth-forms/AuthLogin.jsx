@@ -36,10 +36,15 @@ export default function AuthLogin() {
 
       localStorage.setItem('token', token);
 
-      if (role === 'client') {
+      localStorage.setItem('role', role);
+
+
+      if (role === 'laveur') {
+        navigate('/laveur');
+      } else if (role === 'admin') {
         navigate('/dashboard/default');
       } else {
-        navigate('/dashboard/clients');
+        navigate('/dashboard/default');
       }
 
     } catch (err) {

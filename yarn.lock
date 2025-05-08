@@ -395,6 +395,11 @@
   resolved "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-6.1.17.tgz"
   integrity sha512-AudvQvgmJP2FU89wpSulUUjeWv24SuyCx8FzH2WIPVaYg+vDGGYarI7K6PcM3TH7B/CyaBjm5Rqw9lXgnwt5YA==
 
+"@fullcalendar/list@^6.1.17":
+  version "6.1.17"
+  resolved "https://registry.npmjs.org/@fullcalendar/list/-/list-6.1.17.tgz"
+  integrity sha512-fkyK49F9IxwlGUBVhJGsFpd/LTi/vRVERLIAe1HmBaGkjwpxnynm8TMLb9mZip97wvDk3CmZWduMe6PxscAlow==
+
 "@fullcalendar/react@^6.1.17":
   version "6.1.17"
   resolved "https://registry.npmjs.org/@fullcalendar/react/-/react-6.1.17.tgz"
